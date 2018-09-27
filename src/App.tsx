@@ -1,28 +1,33 @@
 import * as React from 'react';
+import './App.css';
+import {phraseService} from "./infrastructure/Factory";
+import Phrase from "./domain/Phrase";
+import PhraseComponent from "./components/Phrase";
 
-interface Props {
-    name: string;
-    enthusiasmLevel?: number;
+interface State {
+    phrases: Array<Phrase>
 }
 
-function Hello({ name, enthusiasmLevel = 1 }: Props) {
-    if (enthusiasmLevel <= 0) {
-        throw new Error('You could be a little more enthusiastic. :D');
+export default class App extends React.Component<any, State> {
+    state: Readonly<State> = {
+        phrases: []
+    };
+
+    async componentDidMount() {
+        const phrases = await phraseService.getRandomPhrases(5);
+        this.setState({phrases});
     }
 
-    return (
-        <div className="hello">
-            <div className="greeting">
-                Hello {name + getExclamationMarks(enthusiasmLevel)}
+    public render() {
+        const phrases = this.state.phrases.map(phrase => <PhraseComponent key={phrase.id} text={phrase.text}/>)
+
+        return (
+            <div className="App">
+                <h1>Chuck Norris phrases</h1>
+                <div className='phraseContainer'>
+                    {phrases}
+                </div>
             </div>
-        </div>
-    );
-}
-
-export default Hello;
-
-// helpers
-
-function getExclamationMarks(numChars: number) {
-    return Array(numChars + 1).join('!');
+        )
+    }
 }

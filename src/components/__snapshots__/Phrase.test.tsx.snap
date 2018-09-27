@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Phrase has correct structure 1`] = `
+
+<div class="phrase">
+  <span>
+    some joke
+  </span>
+  <hr>
+</div>
+
+`;
