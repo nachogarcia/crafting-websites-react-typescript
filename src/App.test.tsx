@@ -1,30 +1,28 @@
-import * as React from 'react';
-import * as enzyme from 'enzyme';
-import Hello from './App';
+import * as React from 'react'
+import {shallow, ShallowWrapper} from "enzyme";
+import App from './App'
+import Phrase from './components/Phrase'
+import randomPhrases from './tests/fixtures/randomPhrases'
+import {phraseService} from "./infrastructure/Factory";
 
-it('renders the correct text when no enthusiasm level is given', () => {
-    const hello = enzyme.shallow(<Hello name='Daniel' />);
-    expect(hello.find(".greeting").text()).toEqual('Hello Daniel!')
-});
+describe('App', () => {
+    let wrapper: ShallowWrapper<App>;
 
-it('renders the correct text with an explicit enthusiasm of 1', () => {
-    const hello = enzyme.shallow(<Hello name='Daniel' enthusiasmLevel={1}/>);
-    expect(hello.find(".greeting").text()).toEqual('Hello Daniel!')
-});
+    beforeEach(() => {
+        phraseService.getRandomPhrases = jest.fn(() => randomPhrases);
+        wrapper = shallow(<App />);
+    });
 
-it('renders the correct text with an explicit enthusiasm level of 5', () => {
-    const hello = enzyme.shallow(<Hello name='Daniel' enthusiasmLevel={5} />);
-    expect(hello.find(".greeting").text()).toEqual('Hello Daniel!!!!!');
-});
+    it('gets 5 random phrases on creation', () => {
+        expect(phraseService.getRandomPhrases).toHaveBeenCalledWith(5);
+    });
 
-it('throws when the enthusiasm level is 0', () => {
-    expect(() => {
-        enzyme.shallow(<Hello name='Daniel' enthusiasmLevel={0} />);
-    }).toThrow();
-});
+    it('shows phrases', () => {
+        const phraseComponents = wrapper.find(Phrase);
 
-it('throws when the enthusiasm level is negative', () => {
-    expect(() => {
-        enzyme.shallow(<Hello name='Daniel' enthusiasmLevel={-1} />);
-    }).toThrow();
+        randomPhrases.forEach((phrase, index) => {
+            const phraseComponent = phraseComponents.at(index);
+            expect(phraseComponent.prop('text')).toEqual(phrase.text);
+        });
+    });
 });

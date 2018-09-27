@@ -1,6 +1,12 @@
-.hello {
+h1 {
   text-align: center;
-  margin: 20px;
-  font-size: 48px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.phraseContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.phrase {
+  margin: 2em;
 }
