@@ -9,7 +9,9 @@
     "react-scripts-ts": "2.17.0"
   },
   "jest": {
-    "snapshotSerializers": ["jest-serializer-html"]
+    "snapshotSerializers": [
+      "jest-serializer-html"
+    ]
   },
   "scripts": {
     "start": "react-scripts-ts start",
